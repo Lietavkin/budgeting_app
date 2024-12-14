@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+   
+    <head>
+        <link rel="stylesheet" href="/mnt/c/Users/peter/Documents/GitHub/CS50-Harvard/budgeting_app/static/styles.css">
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+    </head>
+
+    <body>
+        <h1>Budget dashboard</h1>
+        <h2>Income</h2>
+            <p>Total income: {{ total_income }}$</p>
+        <h2>Expenses</h2>
+            <p>Total expenses: {{total_expenses}}$</p>
+        
+        <h2>Savings</h2>
+            <p>Total savings: {{total_savings}}$</p>
+
+        <h2>Expense Breakdown</h2>
+        {% if chart_path %}
+        <img src="{{ url_for('static', filename='expense_pie_chart.png') }}" alt="Expense Breakdown">
+        {% else %}
+        <p>No expenses recorded yet.</p>
+        {% endif %}
+
+        <h2>Income vs Expenses</h2>
+         {% if bar_chart_path %}
+         <img src="{{url_for('static', filename='income_vs_expenses.png') }}" alt="Income vs Expenses">
+
+         {% else %}
+         <p>No data to show</p>
+        {%endif%}
+        <h2>Expense breakdown</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for category, amount in expense_summary.items()%}
+                <tr>
+                    <td>{{category}}</td>
+                    <td>{{amount}}$</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table >
+    </body>
+</html>
