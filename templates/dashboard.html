@@ -2,7 +2,8 @@
 <html lang="en">
    
     <head>
-        <link rel="stylesheet" href="/mnt/c/Users/peter/Documents/GitHub/CS50-Harvard/budgeting_app/static/styles.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +11,25 @@
     </head>
 
     <body>
+        <div>
+        <h1>Savings goal</h1>
+        <p>Planned savings: ${{ savings_goal }} </p>
+        <p>Actual savings:  ${{ total_savings }} </p>
+        <h2> Suggestions</h2>
+        <ul>
+            {% for suggestion in suggestions %}
+            <li>{{suggestion}} </li>
+            {% endfor %}
+        </ul>
+        </div>
         <h1>Budget dashboard</h1>
         <h2>Income</h2>
-            <p>Total income: {{ total_income }}$</p>
+            <p>Total income: ${{ total_income }} </p>
         <h2>Expenses</h2>
-            <p>Total expenses: {{total_expenses}}$</p>
+            <p>Total expenses: ${{total_expenses}} </p>
         
         <h2>Savings</h2>
-            <p>Total savings: {{total_savings}}$</p>
+            <p>Total savings: ${{total_savings}}</p>
 
         <h2>Expense Breakdown</h2>
         {% if chart_path %}
@@ -32,7 +44,7 @@
 
          {% else %}
          <p>No data to show</p>
-        {%endif%}
+        {% endif %}
         <h2>Expense breakdown</h2>
         <table border="1">
             <thead>
@@ -45,7 +57,7 @@
                 {%for category, amount in expense_summary.items()%}
                 <tr>
                     <td>{{category}}</td>
-                    <td>{{amount}}$</td>
+                    <td>${{amount}}</td>
                 </tr>
                 {% endfor %}
             </tbody>

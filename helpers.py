@@ -7,5 +7,7 @@ def init_db():
    
     cursor.execute(""" CREATE TABLE IF NOT EXISTS income (id INTEGER PRIMARY KEY AUTOINCREMENT,amount REAL NOT NULL,date TEXT NOT NULL ) """)
     cursor.execute("""CREATE TABLE IF NOT EXISTS expenses ( id INTEGER PRIMARY KEY AUTOINCREMENT,category TEXT NOT NULL, amount REAL NOT NULL,date TEXT NOT NULL)""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS savings_goal(id INTEGER PRIMARY KEY, amount REAL NOT NULL)""")
     conn.commit()
     conn.close()
+
