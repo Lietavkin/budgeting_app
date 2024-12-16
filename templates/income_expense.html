@@ -31,5 +31,19 @@
         <input type="number" name="savings_goal" id="savings_goal" required>
         <button type="submit">Set Savings Goal</button>
     </form>    
+
+    <h1>Recurring expenses</h1>
+    <form action = "/recurring_expenses" method = "post">
+        <label for="category">Category</label>
+        <input type="text" name="category" id="category" required>
+        <label for="amount">Amount</label>
+        <input type="number" name="amount" id="amount" required>
+        <label for="frequency">Frequency</label>
+        <select name="frequency" id="frequency">
+            <option value="monthly">Monthly</option>
+            <option value="weekly">Weekly</option>
+        </select>
+        <button type="submit">Add recurring expense</button>
+    </form>
 </body>
 </html>
