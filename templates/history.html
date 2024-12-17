@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historical Data</title>
+</head>
+<body>
+    <table border=1>
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Total income</th>
+                <th>Total expenses </th>
+                <th>Savings </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for month, data in history.items() %}
+            <tr>
+                <td>{{month}}</td>
+                <td>${{data.income or 0}} </td>
+                <td>${{data.expenses or 0}}</td>
+                <td>${{( data.income or 0) - (data.expenses or 0)}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

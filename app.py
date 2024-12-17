@@ -1,21 +1,35 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session, send_file
 import sqlite3
-from helpers import init_db
+from helpers import init_db, apply_recurring_expenses
 import matplotlib.pyplot as plt
 import os
-from flask import send_file
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
+import secrets
+
+
+
 
 app = Flask(__name__)
+
+app.secret_key = secrets.token_hex(16)
 init_db()
+apply_recurring_expenses()
 
 @app.route("/")
 def home():
-    return render_template("/home.html")  
+    if "user_id"  not in session: 
+        return redirect('/login')  
+    return redirect('/dashboard')  
+
 
 @app.route("/input")
 def input_form():
+    if 'user_id' not in session:  # Check if the user is not logged in
+        return redirect('/login')  
+    user_id = session["user_id"]
     return render_template("income_expense.html")
 
 @app.route("/savings_goal", methods=["POST"])
@@ -65,32 +79,27 @@ def add_expense():
         return redirect("/input")
     except ValueError as e:
         return f"<h1>Error: {str(e)}</h1><a href='/input'>Go back</a>"
+    
 @app.route("/dashboard")
 def dashboard():
+    if "user_id" not in session:
+        return redirect("/login") 
+    user_id = session["user_id"]
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
-    cursor.execute("SELECT SUM(amount) FROM income")
+    cursor.execute("SELECT SUM(amount) FROM income WHERE user_id=?",(user_id,))
     total_income= cursor.fetchone()[0] or 0
-    cursor.execute("SELECT SUM(amount) FROM expenses")
+    cursor.execute("SELECT SUM(amount) FROM expenses WHERE user_id=?",(user_id,))
     total_expenses = cursor.fetchone()[0] or 0
-    cursor.execute("SELECT amount from savings_goal WHERE id=?",(1,))
+    cursor.execute("SELECT amount from savings_goal WHERE user_id=?",(user_id,))
     savings_goal = cursor.fetchone()
     savings_goal=savings_goal[0] if savings_goal else 0
 
     total_savings = total_income - total_expenses
 
-    suggestions= []
-    if total_income == 0 and total_expenses == 0:
-        suggestions.append("No data to show.")
-    elif total_savings < savings_goal:
-        deficit = savings_goal - total_savings
-        suggestions.append(f"You are ${deficit:.2f} short of your savings goal! Maybe you should consider reducing your expenses.")
-    else:
-        suggestions.append(f"You are doing a great job meeting your savings goal of ${savings_goal}!")
-
-    cursor.execute("SELECT category, SUM(amount) FROM expenses GROUP BY category")
+    cursor.execute("SELECT category, SUM(amount) FROM expenses WHERE user_id=? GROUP BY category ",(user_id,))
     expense_summary= {row[0]: row[1] for row in cursor.fetchall()}
-    conn.close()
+    
 
     if expense_summary:
         values = list(expense_summary.values())
@@ -113,7 +122,7 @@ def dashboard():
         plt.figure(figsize=(6,4))
         categories = ["Income","Expenses"]
         amounts = [total_income, total_expenses]
-        plt.bar(categories, amounts, color=(["green","red"]))
+        plt.bar(categories, amounts, color=["green","red"])
         plt.title("Income vs Expenses")
         plt.ylabel("Amount($)")
         plt.tight_layout()
@@ -124,7 +133,21 @@ def dashboard():
         plt.savefig(bar_chart_path)
         plt.close()
 
-    return render_template("dashboard.html", savings_goal=savings_goal, suggestions = suggestions, total_income=total_income,total_expenses=total_expenses, total_savings=total_savings, expense_summary=expense_summary, chart_path=chart_path, bar_chart_path=bar_chart_path)
+    cursor.execute("SELECT category, amount, frequency FROM recurring_expenses  WHERE user_id = ?", (user_id,))
+    recurring_expenses = [{"category": row[0], "amount": row[1], "frequency": row[2]} for row in cursor.fetchall()]
+    
+    
+
+    suggestions= []
+    if total_income == 0 and total_expenses == 0:
+        suggestions.append("No data to show.")
+    elif total_savings < savings_goal:
+        deficit = savings_goal - total_savings
+        suggestions.append(f"You are ${deficit:.2f} short of your savings goal! Maybe you should consider reducing your expenses.")
+    else:
+        suggestions.append(f"You are doing a great job meeting your savings goal of ${savings_goal}!")
+    conn.close()
+    return render_template ("dashboard.html", recurring_expenses= recurring_expenses, savings_goal=savings_goal, suggestions = suggestions, total_income=total_income,total_expenses=total_expenses, total_savings=total_savings, expense_summary=expense_summary, chart_path=chart_path, bar_chart_path=bar_chart_path)
 
 
 
@@ -145,13 +168,13 @@ def create_report():
     cursor.execute("SELECT SUM(amount) FROM expenses")
     total_expenses= cursor.fetchone()[0] or 0
 
-    cursor.execute('SELECT amount FROM savings_goal WHERE id = 1')
+    cursor.execute("SELECT amount FROM savings_goal WHERE user_id = user_id")
     savings_goal = cursor.fetchone()
     savings_goal = savings_goal[0] if savings_goal else 0
 
     total_savings = total_income - total_expenses
     cursor.execute("SELECT category, SUM(amount) FROM expenses GROUP BY category")
-    expense_summary = cursor.fetchall()
+    expense_summary = {row[0]: row[1] for row in cursor.fetchall()}
     conn.close()
 
     c = canvas.Canvas(report_path, pagesize=letter)
@@ -171,9 +194,88 @@ def create_report():
     return send_file(report_path, as_attachment=True)
 
 
+@app.route("/recurring_expenses", methods=["POST"])
+def recurring_expenses():
+    try:
+        category = request.form.get("category")
+        amount= float(request.form.get("amount"))
+        frequency= request.form.get("frequency")
+        if amount <= 0:
+            return "Amount must be a positive number"
+        conn = sqlite3.connect("database.db")
+        cursor= conn.cursor()
+        cursor.execute("INSERT INTO recurring_expenses (category, amount, frequency) VALUES (?, ?, ?)",(category, amount, frequency))
+        conn.commit()
+        conn.close()
+        return redirect("/input")
+    except ValueError as r:
+        return f"<h1>Error: {str(r)}</h1><a href='/input'>Go back<a>",400
 
 
+@app.route("/history")
+def history():
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+    cursor.execute("""SELECT strftime("%Y-%m", date) AS month, SUM(amount) FROM income GROUP BY month ORDER BY month DESC""")
+    income_history = cursor.fetchall()
 
-if __name__ == '__main__':
+    cursor.execute("""SELECT strftime("%Y-%m", date) AS month, SUM(amount) FROM expenses GROUP BY month ORDER BY month DESC""")
+    expense_history = cursor.fetchall()
+    conn.close()
+
+   
+    history = {}
+    for month, income in income_history:
+        history[month] = {"income": income, "expenses": 0}
+    for month, expenses in expense_history:
+        if month in history:
+            history[month]["expenses"] = expenses
+        else:
+            history[month] = {"income": 0, "expenses": expenses}
+
+    return render_template("history.html", history=history)
+
+        
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        hash_password = generate_password_hash(password)
+        try:
+            conn = sqlite3.connect("database.db")
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO users (username, hash) VALUES (?, ?)", (username, hash_password))
+            conn.commit()
+            conn.close()
+            return redirect("/login")
+        except sqlite3.IntegrityError:
+            return "Username already exists. Please try again."
+    return render_template("register.html")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        conn = sqlite3.connect("database.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT user_id, hash FROM users WHERE username = ?", (username,))
+        user = cursor.fetchone()
+        conn.close()
+
+        if user and check_password_hash(user[1], password):
+            session["user_id"] = user[0] 
+            return redirect("/")
+        else:
+            return "Invalid username or password."
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
+
+if __name__ == "__main__":
     print("starting app")
     app.run(debug=True)

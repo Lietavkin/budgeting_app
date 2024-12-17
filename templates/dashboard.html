@@ -45,7 +45,7 @@
          {% else %}
          <p>No data to show</p>
         {% endif %}
-        
+
         <h2>Expense breakdown</h2>
         <table border="1">
             <thead>
@@ -63,5 +63,25 @@
                 {% endfor %}
             </tbody>
         </table >
+
+        <h2>Recurring expenses</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Frequency</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in recurring_expenses %}
+                <tr> 
+                    <td>{{expense ['category']}}</td>
+                    <td>>${{expense ['amount']}}</td>
+                    <td>{{expense ['frequency']}}</td>
+                 </tr>   
+                 {% endfor %}
+            </tbody>
+        </table>
     </body>
 </html>
