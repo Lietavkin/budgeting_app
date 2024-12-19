@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+{% extends "base.html" %}
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historical Data</title>
-</head>
-<body>
+{% block title %} Historical Data - MyBudgetTrackr {% endblock %}
+{% block content %}
+<h1> Historical Data </h1>
     <table border=1>
         <thead>
             <tr>
@@ -28,5 +23,7 @@
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+    <footer>
+        <p>&copy; 2024 MyBudgetTrackr. All rights reserved. (Not Really)</p>
+    </footer>
+{% endblock %}

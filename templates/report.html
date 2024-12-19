@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Generate Financial Report</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+{% extends "base.html" %}
 
-    </head>
-    <body>
+{% block title %}Login - MyBudgetTrackr{% endblock %}
+
+{% block content %}
         <h1>Generate Financial Report</h1>
         <p>Download a detailed PDF report of your financial data, including income, expenses, and savings.</p>
         <a href="/create_report" target="_blank">
             <button>Download Financial Report</button></a>
-        
-    </body>
-    </html>
-</html>
+            <footer>
+                <p>&copy; 2024 MyBudgetTrackr. All rights reserved. (Not Really)</p>
+            </footer>
+{% endblock %}

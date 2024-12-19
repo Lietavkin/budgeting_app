@@ -21,42 +21,47 @@ apply_recurring_expenses()
 @app.route("/")
 def home():
     if "user_id"  not in session: 
-        return redirect('/login')  
-    return redirect('/dashboard')  
+        return redirect("/login")  
+    return render_template("home.html")  
 
 
 @app.route("/input")
 def input_form():
-    if 'user_id' not in session:  # Check if the user is not logged in
-        return redirect('/login')  
+    if 'user_id' not in session:  
+        return redirect("/login")  
     user_id = session["user_id"]
     return render_template("income_expense.html")
 
 @app.route("/savings_goal", methods=["POST"])
 def savings_goal():
     try:
+        user_id = session.get('user_id')
+        if user_id is None:
+            return "<h1>Error: You must be logged in to set a savings goal!</h1><a href='/login'>Login</a>", 403
+
         savings_goal= float(request.form.get("savings_goal"))
         if savings_goal <=0:
             raise ValueError("Savings goal must be a positive number!")
         conn=sqlite3.connect("database.db")
         cursor=conn.cursor()
-        cursor.execute("INSERT OR REPLACE INTO savings_goal(id,amount) VALUES(?,?)",(1, savings_goal))
+        cursor.execute("INSERT OR REPLACE INTO savings_goal(user_id, amount) VALUES(?,?)",(user_id, savings_goal))
         conn.commit()
         conn.close()
-        return redirect("/dashboard")
+        return redirect("/input")
     except ValueError as e:
         return f"<h1>Error: {str(e)}</h1><a href='/input'>Go back</a>", 400
 
 @app.route("/add_income", methods=["POST"])
 def add_income():
     try:
+        user_id = session["user_id"]
         income = float(request.form["income"])
         if income < 0:
             raise ValueError("Income must be a positive number")
         date = request.form["income_date"]
         conn = sqlite3.connect("database.db")
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO income (amount, date) VALUES (?, ?)", (income, date))
+        cursor.execute("INSERT INTO income (user_id, amount, date) VALUES (?, ?, ?)", (user_id, income, date))
         conn.commit()
         conn.close()
         return redirect("/input")
@@ -66,6 +71,7 @@ def add_income():
 @app.route("/add_expense", methods=["POST"])
 def add_expense():
     try:
+        user_id = session["user_id"]
         expense = float(request.form["expense"])
         if expense < 0:
             raise ValueError("Expense must be a positive number")
@@ -73,7 +79,7 @@ def add_expense():
         date = request.form["expense_date"]
         conn = sqlite3.connect("database.db")
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO expenses (category, amount, date) VALUES (?, ?, ?)", (category, expense, date))
+        cursor.execute("INSERT INTO expenses (user_id, category, amount, date) VALUES (?, ?, ?, ?)", (user_id, category, expense, date))
         conn.commit()
         conn.close()
         return redirect("/input")
@@ -155,6 +161,10 @@ def dashboard():
 def report_page():
     return render_template("report.html")
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
 
 @app.route("/create_report")
 def create_report():
@@ -197,6 +207,7 @@ def create_report():
 @app.route("/recurring_expenses", methods=["POST"])
 def recurring_expenses():
     try:
+        user_id = session["user_id"]
         category = request.form.get("category")
         amount= float(request.form.get("amount"))
         frequency= request.form.get("frequency")
@@ -204,7 +215,7 @@ def recurring_expenses():
             return "Amount must be a positive number"
         conn = sqlite3.connect("database.db")
         cursor= conn.cursor()
-        cursor.execute("INSERT INTO recurring_expenses (category, amount, frequency) VALUES (?, ?, ?)",(category, amount, frequency))
+        cursor.execute("INSERT INTO recurring_expenses (user_id, category, amount, frequency) VALUES (?, ?, ?, ?)",(user_id, category, amount, frequency))
         conn.commit()
         conn.close()
         return redirect("/input")
@@ -241,16 +252,20 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        hash_password = generate_password_hash(password)
-        try:
-            conn = sqlite3.connect("database.db")
-            cursor = conn.cursor()
-            cursor.execute("INSERT INTO users (username, hash) VALUES (?, ?)", (username, hash_password))
-            conn.commit()
-            conn.close()
-            return redirect("/login")
-        except sqlite3.IntegrityError:
-            return "Username already exists. Please try again."
+        confirm_password = request.form["confirm_password"]
+        if confirm_password == password:
+            hash_password = generate_password_hash(password)
+            try:
+                conn = sqlite3.connect("database.db")
+                cursor = conn.cursor()
+                cursor.execute("INSERT INTO users (username, hash) VALUES (?, ?)", (username, hash_password))
+                conn.commit()
+                conn.close()
+                return redirect("/login")
+            except sqlite3.IntegrityError:
+                return "Username already exists. Please try again."
+        else:
+            return "Passwords must match!"
     return render_template("register.html")
 
 @app.route("/login", methods=["GET", "POST"])

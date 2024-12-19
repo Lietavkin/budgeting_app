@@ -1,22 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Home - Budgeting App</title>
-    </head>
-    <body>
-        <h1>Welcome to the budgeting app!</h1>
-        <p>Here you can manage your finances and reach your investment goals.</p>
-            <nav>
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/dashboard">Dashboard</a></li>
-                    <li><a href="/input">Add Income/Expenses</a></li>
-                    <li><a href="/report">Generate Report</a></li>
-                    <li><a href="/history">History</a></li>
-                </ul>
-            </nav>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MyBudgetTrackr</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home&about.css') }}">
+      
+</head>
+<body>
+<div class="container">
+<div class="welcome-section">
+<h1>Welcome to the My BudgetBuddy!</h1>
+<p>Take control of your finances and work towards your investment goals with ease.</p>
+<p>Start by setting your savings goal, tracking your income and expenses, and generating reports to stay on top of your finances.</p>
+</div>
+
+<div class="features">
+
+<div class="feature-item">
+    <h3>Track Your Income and Expenses</h3>
+    <p>Keep track of your spending habits and monitor how much you are saving each month.</p>
+</div>
+<div class="feature-item">
+    <h3>Set a Savings Goal</h3>
+    <p>Set a target and see how your savings progress over time.</p>
+</div>
+<div class="feature-item">
+    <h3>Generate Financial Reports</h3>
+    <p>Get detailed insights into your finances with easy-to-understand reports.</p>
+</div>
+</div>
+
+<div class="cta">
+<h3>Ready to get started?</h3>
+<a href="/input" class="button">Start Tracking</a>
+</div>
+
+<div class="user-info">
+<p> Let's continue with your financial journey.</p>
+</div>
+</div>
+</body>
+<footer>
+    <p>&copy; 2024 MyBudgetTrackr. All rights reserved. (Not Really)</p>
+</footer>
 </html>

@@ -1,87 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
-   
-    <head>
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+{% extends "base.html" %}
 
+{% block title %}Dashboard - MyBudgetTrackr{% endblock %}
 
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard</title>
-    </head>
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>MyBudgetTrackr Dashboard</h1>
+        <p>Track your income, expenses, and savings goal progress.</p>
+    </div>
 
-    <body>
-        <div>
-        <h1>Savings goal</h1>
-        <p>Planned savings: ${{ savings_goal }} </p>
-        <p>Actual savings:  ${{ total_savings }} </p>
-        <h2> Suggestions</h2>
-        <ul>
-            {% for suggestion in suggestions %}
-            <li>{{suggestion}} </li>
-            {% endfor %}
-        </ul>
+    <div class="stats">
+        <div class="stat-card">
+            <h3>Savings Goal</h3>
+            <p>Planned savings: ${{ savings_goal }}</p>
+            <p>Actual savings: ${{ total_savings }}</p>
         </div>
-        <h1>Budget dashboard</h1>
-        <h2>Income</h2>
-            <p>Total income: ${{ total_income }} </p>
-        <h2>Expenses</h2>
-            <p>Total expenses: ${{total_expenses}} </p>
-        
-        <h2>Savings</h2>
-            <p>Total savings: ${{total_savings}}</p>
+        <div class="stat-card">
+            <h3>Income</h3>
+            <p>Total income: ${{ total_income }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Expenses</h3>
+            <p>Total expenses: ${{ total_expenses }}</p>
+        </div>
+    </div>
 
-        <h2>Expense Breakdown</h2>
+    <h2>Savings Goal Suggestions</h2>
+    <ul>
+        {% for suggestion in suggestions %}
+        <li>{{ suggestion }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Expense Breakdown</h2>
+    <div class="chart-container">
         {% if chart_path %}
-        <img src="{{ url_for('static', filename='expense_pie_chart.png') }}" alt="Expense Breakdown">
+        <div class="chart">
+            <h3>Expense Breakdown by Category</h3>
+            <img src="{{ url_for('static', filename='expense_pie_chart.png') }}" alt="Expense Breakdown">
+        </div>
         {% else %}
         <p>No expenses recorded yet.</p>
         {% endif %}
 
-        <h2>Income vs Expenses</h2>
-         {% if bar_chart_path %}
-         <img src="{{url_for('static', filename='income_vs_expenses.png') }}" alt="Income vs Expenses">
+        <div class="chart">
+            <h3>Income vs Expenses</h3>
+            {% if bar_chart_path %}
+            <img src="{{ url_for('static', filename='income_vs_expenses.png') }}" alt="Income vs Expenses">
+            {% else %}
+            <p>No data to show</p>
+            {% endif %}
+        </div>
+    </div>
 
-         {% else %}
-         <p>No data to show</p>
-        {% endif %}
+    <h2>Expense Breakdown by Category</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category, amount in expense_summary.items() %}
+            <tr>
+                <td>{{ category }}</td>
+                <td>${{ amount }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-        <h2>Expense breakdown</h2>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Category</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                {%for category, amount in expense_summary.items()%}
-                <tr>
-                    <td>{{category}}</td>
-                    <td>${{amount}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table >
+    <h2>Recurring Expenses</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Frequency</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expense in recurring_expenses %}
+            <tr>
+                <td>{{ expense['category'] }}</td>
+                <td>${{ expense['amount'] }}</td>
+                <td>{{ expense['frequency'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
 
-        <h2>Recurring expenses</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Category</th>
-                    <th>Amount</th>
-                    <th>Frequency</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for expense in recurring_expenses %}
-                <tr> 
-                    <td>{{expense ['category']}}</td>
-                    <td>>${{expense ['amount']}}</td>
-                    <td>{{expense ['frequency']}}</td>
-                 </tr>   
-                 {% endfor %}
-            </tbody>
-        </table>
-    </body>
-</html>
+{% block footer %}
+<footer>
+    <p>&copy; 2024 MyBudgetTrackr. All rights reserved. (Not Really)</p>
+</footer>
+{% endblock %}
