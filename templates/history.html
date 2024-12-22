@@ -2,28 +2,41 @@
 
 {% block title %} Historical Data - MyBudgetTrackr {% endblock %}
 {% block content %}
+
 <h1> Historical Data </h1>
     <table border=1>
         <thead>
+
             <tr>
                 <th>Month</th>
                 <th>Total income</th>
                 <th>Total expenses </th>
                 <th>Savings </th>
             </tr>
-        </thead>
-        <tbody>
-            {% for month, data in history.items() %}
-            <tr>
-                <td>{{month}}</td>
-                <td>${{data.income or 0}} </td>
-                <td>${{data.expenses or 0}}</td>
-                <td>${{( data.income or 0) - (data.expenses or 0)}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+</thead>
+
+<tbody>
+    {% for month, data in history.items() %}
+    <tr>
+
+        <td>{{month}}</td>
+        <td>${{data.income or 0}} </td>
+        <td>${{data.expenses or 0}}</td>
+        <td>${{( data.income or 0) - (data.expenses or 0)}}</td>
+
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+
+
     <footer>
         <p>&copy; 2024 MyBudgetTrackr. All rights reserved. (Not Really)</p>
     </footer>
+
 {% endblock %}
+
+
+
+<!-- This file was created with assistance from ChatGPT for guidance on programming and problem-solving.
+     All final code and implementation align with course requirements and my own work. -->

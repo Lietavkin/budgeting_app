@@ -1,12 +1,21 @@
 from flask import Flask, render_template, request, redirect, session, send_file
+
 import sqlite3
+
 from helpers import init_db, apply_recurring_expenses
+
 import matplotlib.pyplot as plt
+
 import os
+
 from reportlab.lib.pagesizes import letter
+
 from reportlab.pdfgen import canvas
+
 import datetime
+
 from werkzeug.security import generate_password_hash, check_password_hash
+
 import secrets
 
 
@@ -14,15 +23,18 @@ import secrets
 
 app = Flask(__name__)
 
+
 app.secret_key = secrets.token_hex(16)
 init_db()
 apply_recurring_expenses()
+
 
 @app.route("/")
 def home():
     if "user_id"  not in session: 
         return redirect("/login")  
     return render_template("home.html")  
+
 
 
 @app.route("/input")
@@ -32,12 +44,14 @@ def input_form():
     user_id = session["user_id"]
     return render_template("income_expense.html")
 
+
 @app.route("/savings_goal", methods=["POST"])
 def savings_goal():
     try:
         user_id = session.get('user_id')
         if user_id is None:
             return "<h1>Error: You must be logged in to set a savings goal!</h1><a href='/login'>Login</a>", 403
+
 
         savings_goal= float(request.form.get("savings_goal"))
         if savings_goal <=0:
@@ -53,6 +67,7 @@ def savings_goal():
 
 @app.route("/add_income", methods=["POST"])
 def add_income():
+
     try:
         user_id = session["user_id"]
         income = float(request.form["income"])
@@ -67,6 +82,7 @@ def add_income():
         return redirect("/input")
     except ValueError as e:
         return f"<h1>Error: {str(e)}</h1><a href='/input'>Go back</a>"
+
 
 @app.route("/add_expense", methods=["POST"])
 def add_expense():
@@ -86,6 +102,7 @@ def add_expense():
     except ValueError as e:
         return f"<h1>Error: {str(e)}</h1><a href='/input'>Go back</a>"
     
+
 @app.route("/dashboard")
 def dashboard():
     if "user_id" not in session:
@@ -103,9 +120,11 @@ def dashboard():
 
     total_savings = total_income - total_expenses
 
+
     cursor.execute("SELECT category, SUM(amount) FROM expenses WHERE user_id=? GROUP BY category ",(user_id,))
     expense_summary= {row[0]: row[1] for row in cursor.fetchall()}
     
+
 
     if expense_summary:
         values = list(expense_summary.values())
@@ -121,9 +140,11 @@ def dashboard():
         plt.close()
     else:
         chart_path= None
+ 
 
     if total_income == 0 and total_expenses == 0:
         bar_chart_path = None
+
     else:
         plt.figure(figsize=(6,4))
         categories = ["Income","Expenses"]
@@ -157,13 +178,16 @@ def dashboard():
 
 
 
+
 @app.route("/report")
 def report_page():
     return render_template("report.html")
 
+
 @app.route("/about")
 def about():
     return render_template("about.html")
+
 
 
 @app.route("/create_report")
@@ -172,20 +196,25 @@ def create_report():
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
     
+
     cursor.execute("SELECT sum(amount) FROM income")
     total_income = cursor.fetchone()[0] or 0
 
+
     cursor.execute("SELECT SUM(amount) FROM expenses")
     total_expenses= cursor.fetchone()[0] or 0
+
 
     cursor.execute("SELECT amount FROM savings_goal WHERE user_id = user_id")
     savings_goal = cursor.fetchone()
     savings_goal = savings_goal[0] if savings_goal else 0
 
+
     total_savings = total_income - total_expenses
     cursor.execute("SELECT category, SUM(amount) FROM expenses GROUP BY category")
     expense_summary = {row[0]: row[1] for row in cursor.fetchall()}
     conn.close()
+
 
     c = canvas.Canvas(report_path, pagesize=letter)
     c.setFont("Helvetica", 12)
@@ -196,7 +225,8 @@ def create_report():
     c.drawString(50, 640, f"Savings Goal: ${savings_goal:.2f}")
     c.drawString(50, 600, "Expense Breakdown by Category:")
     y = 580
-    for category, amount in expense_summary:
+
+    for category, amount in expense_summary.items():
         c.drawString(70, y, f"{category}: ${amount:.2f}")
         y -= 20
         
@@ -207,6 +237,7 @@ def create_report():
 @app.route("/recurring_expenses", methods=["POST"])
 def recurring_expenses():
     try:
+
         user_id = session["user_id"]
         category = request.form.get("category")
         amount= float(request.form.get("amount"))
@@ -221,6 +252,8 @@ def recurring_expenses():
         return redirect("/input")
     except ValueError as r:
         return f"<h1>Error: {str(r)}</h1><a href='/input'>Go back<a>",400
+
+
 
 
 @app.route("/history")
@@ -246,6 +279,8 @@ def history():
 
     return render_template("history.html", history=history)
 
+
+
         
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -268,6 +303,7 @@ def register():
             return "Passwords must match!"
     return render_template("register.html")
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -286,6 +322,7 @@ def login():
             return "Invalid username or password."
     return render_template("login.html")
 
+
 @app.route("/logout")
 def logout():
     session.clear()
@@ -294,3 +331,5 @@ def logout():
 if __name__ == "__main__":
     print("starting app")
     app.run(debug=True)
+# This file was created with assistance from ChatGPT for guidance on programming and problem-solving.
+# All final code and implementation align with course requirements and my own work.

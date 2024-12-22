@@ -3,33 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register -MyBudgetTrackr</title>
+
+                <title>Register -MyBudgetTrackr</title>
+
+
     <link rel="stylesheet" href="{{ url_for('static', filename='register&login.css') }}">
       
 </head>
+
+
 <body>
-    <div class="container">
-    <h1>Create Your Account</h1>
-    <form method="POST" class="form-container">
-        <div class="input-group">
-            <label for="username">Username</label>
-            <input type="text" name="username" id="username" required>
-        </div>
 
-        <div class="input-group">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" required>
+<div class="container">
+<h1>Create Your Account</h1>
+<form method="POST" class="form-container">
+<div class="input-group">
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username" required>
+</div>
 
-            <label for="confirm_password">Confirm Password</label>
-            <input type="password" name="confirm_password" id="confirm_password" required>
-        </div>
+
+<div class="input-group">
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+
+    <label for="confirm_password">Confirm Password</label>
+    <input type="password" name="confirm_password" id="confirm_password" required>
+</div>
        
 
+        
+        
         <button type="submit" class="submit-btn">Register</button>
+
+
     </form>
+    
     <p>Already have an account? <a href="/login">Login here</a></p>
 </div>
+
+
 <footer>
     <p>&copy; 2024 MyBudgetTrackr. All rights reserved. (Not Really)</p>
 </footer>
 </body>
+
+
+
+
+<!-- This file was created with assistance from ChatGPT for guidance on programming and problem-solving.
+     All final code and implementation align with course requirements and my own work. -->

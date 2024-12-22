@@ -1,10 +1,15 @@
 {% extends "base.html" %}
+     
 
 {% block title %}Income and Expenses - MyBudgetTrackr{% endblock %}
 
+
 {% block content %}
   <div class="add-income-expenses">
-    <h1>Add Income</h1>
+
+                    <h1>Add Income</h1>
+
+
     <form action="/add_income" method="post" class="form-group">
         <label for="income">Amount: </label>
         <input type="number" id="income" name="income" required>
@@ -12,7 +17,12 @@
         <input type="date" id="income_date" name="income_date" required>
         <button type="submit">Add Income</button>
     </form>
-    <h1>Add Expense</h1>
+
+
+
+                     <h1>Add Expense</h1>
+
+
     <form action="/add_expense" method="post" class="form-group">
         <label for="category">Category:</label>
         <input type="text" id="category" name="category" required>
@@ -23,27 +33,50 @@
         <button type="submit">Add Expense</button>
     </form>
 
-    <form action="/savings_goal" method="post" class="form-group">
-        <h1>Set Savings Goal</h1>
-        <label for="savings_goal">Savings Goal</label>
-        <input type="number" name="savings_goal" id="savings_goal" required>
-        <button type="submit">Set Savings Goal</button>
-    </form>    
 
-    <h1>Recurring expenses</h1>
+
+
+
+    <form action="/savings_goal"   method="post"   class="form-group">
+        <h1>Set Savings Goal </h1>
+        <label for="savings_goal">Savings Goal</label>
+        <input type="number" name= "savings_goal" id="savings_goal" required>
+        <button type="submit">Set Savings Goal </button>
+    </form>   
+    
+    
+
+
+                <h1>Recurring expenses</h1>
+
+
     <form action = "/recurring_expenses" method = "post" class="form-group">
         <label for="category">Category</label>
         <input type="text" name="category" id="category" required>
-        <label for="amount">Amount</label>
-        <input type="number" name="amount" id="amount" required>
+        <label for="amount">Amount </label>
+        <input type="number"   name="amount" id="amount" required>
         <label for="frequency">Frequency</label>
-        <select name="frequency" id="frequency">
-            <option value="monthly">Monthly</option>
-            <option value="weekly">Weekly</option>
+        <select name="frequency"  id="frequency">
+            <option value="monthly"> Monthly</option>
+                <option value="weekly">Weekly</option>
         </select>
+
         <button type="submit">Add recurring expense</button>
+
     </form>
+
+
+
     <footer>
         <p>&copy; 2024 MyBudgetTrackr. All rights reserved. (Not Really)</p>
     </footer>
+
+
+
 {% endblock %}
+
+
+
+
+<!-- This file was created with assistance from ChatGPT for guidance on programming and problem-solving.
+     All final code and implementation align with course requirements and my own work. -->

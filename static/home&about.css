@@ -9,12 +9,12 @@
 .button:hover { background-color: #01579b; }
 .user-info { text-align: center; margin-top: 40px; }
 
-.about-section { max-width: 1200px; margin: 0 auto; padding: 20px; background-color: #fff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; }
-.about-section h1 { font-size: 32px; font-weight: bold; color: #333; text-align: center; margin-bottom: 20px; }
+.about-section  {max-width: 1200px; margin: 0 auto; padding: 20px; background-color: #fff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px; }
+.about-section h1 {font-size: 32px; font-weight: bold; color: #333; text-align: center; margin-bottom: 20px; }
 .about-section p { font-size: 18px; color: #555; line-height: 1.6; margin-bottom: 20px; }
-.about-section ul { list-style-type: disc; padding-left: 20px; font-size: 16px; color: #555; }
-.about-section ul li { margin-bottom: 10px; }
-.about-section a { color: #0288d1; font-weight: bold; text-decoration: none; }
+.about-section ul {list-style-type: disc; padding-left: 20px; font-size: 16px; color: #555; }
+.about-section ul li {margin-bottom: 10px; }
+.about-section a {color: #0288d1; font-weight: bold; text-decoration: none; }
 .about-section a:hover { text-decoration: underline; }
 
 nav ul {list-style-type: none; padding: 0; text-align: center; background-color: #0277bd; margin: 0;}
@@ -23,3 +23,5 @@ nav ul li a {text-decoration: none; color: #fff; font-weight: bold; font-size: 1
 nav ul li a:hover {background-color: #01579b; text-decoration: none;}
 
 
+/* This file was created with assistance from ChatGPT for guidance on programming and problem-solving.
+   All final code and implementation align with course requirements and my own work. */

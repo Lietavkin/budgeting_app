@@ -1,100 +1,150 @@
 {% extends "base.html" %}
 
+
+
 {% block title %}Dashboard - MyBudgetTrackr{% endblock %}
 
+
 {% block content %}
+
 <div class="dashboard-container">
-    <div class="dashboard-header">
-        <h1>MyBudgetTrackr Dashboard</h1>
-        <p>Track your income, expenses, and savings goal progress.</p>
-    </div>
+<div class="dashboard-header">
 
-    <div class="stats">
-        <div class="stat-card">
-            <h3>Savings Goal</h3>
-            <p>Planned savings: ${{ savings_goal }}</p>
-            <p>Actual savings: ${{ total_savings }}</p>
-        </div>
-        <div class="stat-card">
-            <h3>Income</h3>
-            <p>Total income: ${{ total_income }}</p>
-        </div>
-        <div class="stat-card">
-            <h3>Expenses</h3>
-            <p>Total expenses: ${{ total_expenses }}</p>
-        </div>
-    </div>
+    <h1>MyBudgetTrackr Dashboard</h1>
+    <p>Track your income, expenses, and savings goal progress.</p>
+</div>
 
-    <h2>Savings Goal Suggestions</h2>
-    <ul>
+
+
+
+
+<div class="stats">
+
+<div class="stat-card">
+
+    <h3>Savings Goal</h3>
+
+    <p>Planned savings: ${{ savings_goal }}</p>
+    <p>Actual savings: ${{ total_savings }}</p>
+
+</div>
+
+
+
+<div class="stat-card">
+
+    <h3>Income</h3>
+
+    <p>Total income: ${{ total_income }}</p>
+</div>
+
+<div class="stat-card">
+    <h3>Expenses</h3>
+
+    <p>Total expenses: ${{ total_expenses }}</p>
+</div>
+</div>
+
+
+
+        <h2>Savings Goal Suggestions</h2>
+        <ul>
         {% for suggestion in suggestions %}
         <li>{{ suggestion }}</li>
         {% endfor %}
-    </ul>
+        </ul>
 
-    <h2>Expense Breakdown</h2>
-    <div class="chart-container">
-        {% if chart_path %}
-        <div class="chart">
-            <h3>Expense Breakdown by Category</h3>
-            <img src="{{ url_for('static', filename='expense_pie_chart.png') }}" alt="Expense Breakdown">
-        </div>
-        {% else %}
-        <p>No expenses recorded yet.</p>
-        {% endif %}
 
-        <div class="chart">
-            <h3>Income vs Expenses</h3>
-            {% if bar_chart_path %}
-            <img src="{{ url_for('static', filename='income_vs_expenses.png') }}" alt="Income vs Expenses">
+                                    <h2>Expense Breakdown</h2>
+<div class="chart-container">
+{% if chart_path %}
+<div class="chart">
+<h3>Expense Breakdown by Category</h3>
+  <img src="{{ url_for('static', filename='expense_pie_chart.png') }}" alt="Expense Breakdown">
+</div>
+
+
             {% else %}
-            <p>No data to show</p>
+            <p>No expenses recorded yet.</p>
             {% endif %}
-        </div>
+
+
+
+<div class="chart">
+
+    <h3>Income vs Expenses</h3>
+    {% if bar_chart_path %}
+
+    <img src="{{ url_for('static', filename='income_vs_expenses.png') }}" alt="Income vs Expenses">
+    {% else %}
+    <p>No data to show</p>
+    {% endif %}
+</div>
     </div>
 
-    <h2>Expense Breakdown by Category</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Category</th>
-                <th>Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for category, amount in expense_summary.items() %}
-            <tr>
-                <td>{{ category }}</td>
-                <td>${{ amount }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 
-    <h2>Recurring Expenses</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Category</th>
-                <th>Amount</th>
-                <th>Frequency</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for expense in recurring_expenses %}
-            <tr>
-                <td>{{ expense['category'] }}</td>
-                <td>${{ expense['amount'] }}</td>
-                <td>{{ expense['frequency'] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+<h2>Expense Breakdown by Category</h2>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category, amount in expense_summary.items() %}
+        <tr>
+            <td>{{ category }}</td>
+            <td>${{ amount }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Recurring Expenses</h2>
+<table>
+<thead>
+<tr>
+    <th>Category</th>
+    <th>Amount</th>
+    <th>Frequency</th>
+</tr>
+</thead>
+
+
+<tbody>
+{% for expense in recurring_expenses %}
+<tr>
+    <td>{{ expense['category'] }}</td>
+    <td>${{ expense['amount'] }}</td>
+    <td>{{ expense['frequency'] }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
 </div>
 {% endblock %}
 
+
+
+
 {% block footer %}
+
+
 <footer>
     <p>&copy; 2024 MyBudgetTrackr. All rights reserved. (Not Really)</p>
 </footer>
+
+
 {% endblock %}
+
+
+
+
+
+
+
+
+<!-- This file was created with assistance from ChatGPT for guidance on programming and problem-solving.
+     All final code and implementation align with course requirements and my own work. -->
