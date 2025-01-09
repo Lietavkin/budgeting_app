@@ -1,9 +1,9 @@
 # MyBudgetTrackr
 
-#### Video Demo: <URL HERE>
-
 #### Description:
 **MyBudgetTrackr** is a personal finance management tool that I developed as part of my final project for Harvard’s CS50 course. This project is designed to help users manage their finances more effectively by tracking income, expenses, and savings goals in one place. The aim is to provide an intuitive and user-friendly platform to assist individuals in achieving financial stability and reaching their goals.
+
+---
 
 ## Key Features
 
@@ -19,6 +19,8 @@
 4. **View Spending Breakdown by Category**  
    Users can get a detailed breakdown of their spending by category, providing them insights into where they can cut back or allocate funds more efficiently.
 
+---
+
 ## Technologies Used
 
 - **Python**  
@@ -30,6 +32,7 @@
 - **HTML/CSS**  
   The frontend is built using HTML and CSS, which allows for a simple, yet attractive user interface. The design is optimized for desktop usage, but future updates will focus on making it mobile-friendly.
 
+---
 
 ## Future Enhancements
 
@@ -39,11 +42,15 @@
 2. **Email Alerts for Financial Milestones**  
    As an additional feature, I am considering adding email alerts for when users approach or reach financial milestones, such as hitting their savings goal or exceeding their monthly budget. This feature will keep users engaged and motivated to meet their financial goals.
 
+---
+
 ## Design and Implementation
 
 The app’s design focuses on simplicity and ease of use, ensuring that users can quickly navigate through different sections. The dashboard provides a snapshot of income, expenses, and savings, while the detailed views of income and expenses allow users to manage their finances at a granular level.
 
 The app has been developed using the principles of good software design, ensuring that the code is clean, modular, and maintainable. While Flask and SQLite were chosen due to their simplicity and speed, future plans include exploring more advanced technologies to further scale the app’s features and capabilities.
+
+---
 
 ## Challenges Faced
 
@@ -51,8 +58,37 @@ One of the main challenges I faced while building this app was designing the sys
 
 Additionally, handling edge cases, such as invalid input or large numbers of transactions, required careful planning to ensure the app remained functional and responsive.
 
+---
+
 ## Conclusion
 
 Building **MyBudgetTrackr** has been an excellent learning experience. It allowed me to apply what I’ve learned throughout CS50, from web development to database management. The project also provided an opportunity to explore some areas of personal interest, such as personal finance management, and gave me a chance to build something that can help others better manage their money.
 
-This app is a testament to the skills I’ve acquired during CS50, and I’m excited to continue improving and adding new features. My next steps will focus on making the more app mobile-friendly and enhancing its security with user authentication.
+This app is a testament to the skills I’ve acquired during CS50, and I’m excited to continue improving and adding new features. My next steps will focus on making the app more mobile-friendly and enhancing its security with user authentication.
+
+---
+
+## How to Launch the App
+
+### Prerequisites
+Before launching the app, ensure the following are installed:
+1. **Python 3** (version 3.6 or above)  
+   - Download and install Python from [https://www.python.org/downloads/](https://www.python.org/downloads/).
+2. **pip** (Python’s package manager)  
+   - Pip should come installed with Python. You can verify by running:
+     ```bash
+     python3 -m ensurepip --upgrade
+     ```
+3. **Git** (for cloning the repository)  
+   - Download and install Git from [https://git-scm.com/downloads](https://git-scm.com/downloads).
+
+---
+
+### Steps to Launch the App
+
+1. **Clone the Repository**  
+   Open a terminal and run:
+   ```bash
+   git clone https://github.com/Lietavkin/budgeting_app.git
+   cd budgeting_app
+
