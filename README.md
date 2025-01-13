@@ -78,3 +78,4 @@ The app’s design focuses on simplicity and ease of use, ensuring that users ca
 Building MyBudgetTrackr has been an excellent learning experience. It allowed me to apply what I’ve learned throughout CS50, from web development to database management. The project also provided an opportunity to explore some areas of personal interest, such as personal finance management, and gave me a chance to build something that can help others better manage their money.
 
 This app is a testament to the skills I’ve acquired during CS50, and I’m excited to continue improving and adding new features. My next steps will focus on making the app more mobile-friendly and enhancing its security with user authentication.
+
