@@ -45,7 +45,7 @@ venv\Scripts\activate
 
 ### Install Dependencies
 ```bash
-pip install -r requirements.txt
+pip install flask matplotlib reportlab werkzeug
 ```
 
 ### Run the App
