@@ -1,6 +1,3 @@
-Here is the complete code that you can copy and paste:
-
-```markdown
 # MyBudgetTrackr
 
 #### Description:
@@ -30,6 +27,7 @@ Here is the complete code that you can copy and paste:
 ```bash
 git clone https://github.com/Lietavkin/budgeting_app.git
 cd budgeting_app
+
 ```
 
 ### Set Up a Virtual Environment (Optional)
