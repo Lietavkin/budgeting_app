@@ -1,3 +1,6 @@
+Here is the complete code that you can copy and paste:
+
+```markdown
 # MyBudgetTrackr
 
 #### Description:
@@ -27,47 +30,56 @@
 ```bash
 git clone https://github.com/Lietavkin/budgeting_app.git
 cd budgeting_app
-Set Up a Virtual Environment (Optional)
-For Linux/Mac
-bash
-Kopírovať kód
+```
+
+### Set Up a Virtual Environment (Optional)
+For Linux/Mac:
+```bash
 python3 -m venv venv
 source venv/bin/activate
-For Windows
-bash
-Kopírovať kód
+```
+
+For Windows:
+```bash
 python3 -m venv venv
 venv\Scripts\activate
-Install Dependencies
-bash
-Kopírovať kód
+```
+
+### Install Dependencies
+```bash
 pip install -r requirements.txt
-Run the App
-bash
-Kopírovať kód
+```
+
+### Run the App
+```bash
 flask run
-Access the app in your browser at http://127.0.0.1:5000.
+```
 
-Future Enhancements
-Data Visualization Enhancements
-I plan to enhance the app’s data visualization capabilities, adding more interactive charts and graphs that will allow users to gain deeper insights into their spending patterns and financial habits.
+Access the app in your browser at [http://127.0.0.1:5000](http://127.0.0.1:5000).
 
-Email Alerts for Financial Milestones
-As an additional feature, I am considering adding email alerts for when users approach or reach financial milestones, such as hitting their savings goal or exceeding their monthly budget. This feature will keep users engaged and motivated to meet their financial goals.
+---
 
-Design and Implementation
+## Future Enhancements
+
+1. **Data Visualization Enhancements**  
+   I plan to enhance the app’s data visualization capabilities, adding more interactive charts and graphs that will allow users to gain deeper insights into their spending patterns and financial habits.
+
+2. **Email Alerts for Financial Milestones**  
+   As an additional feature, I am considering adding email alerts for when users approach or reach financial milestones, such as hitting their savings goal or exceeding their monthly budget. This feature will keep users engaged and motivated to meet their financial goals.
+
+---
+
+## Design and Implementation
+
 The app’s design focuses on simplicity and ease of use, ensuring that users can quickly navigate through different sections. The dashboard provides a snapshot of income, expenses, and savings, while the detailed views of income and expenses allow users to manage their finances at a granular level.
 
 The app has been developed using the principles of good software design, ensuring that the code is clean, modular, and maintainable. While Flask and SQLite were chosen due to their simplicity and speed, future plans include exploring more advanced technologies to further scale the app’s features and capabilities.
 
-Conclusion
-Building MyBudgetTrackr has been an excellent learning experience. It allowed me to apply what I’ve learned throughout CS50, from web development to database management. The project also provided an opportunity to explore some areas of personal interest, such as personal finance management, and gave me a chance to build something that can help others better manage their money.
+---
+
+## Conclusion
+
+Building **MyBudgetTrackr** has been an excellent learning experience. It allowed me to apply what I’ve learned throughout CS50, from web development to database management. The project also provided an opportunity to explore some areas of personal interest, such as personal finance management, and gave me a chance to build something that can help others better manage their money.
 
 This app is a testament to the skills I’ve acquired during CS50, and I’m excited to continue improving and adding new features. My next steps will focus on making the app more mobile-friendly and enhancing its security with user authentication.
-
-Kopírovať kód
-
-
-
-
-
+```
